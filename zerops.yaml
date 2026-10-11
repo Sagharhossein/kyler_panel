@@ -1,0 +1,17 @@
+zerops:
+  - setup: app
+    build:
+      base: python@3.12
+      buildCommands:
+        - pip install -r requirements.txt --target=.pydeps
+      deployFiles: ./
+    run:
+      base: python@3.12
+      ports:
+        - port: 8000
+          httpSupport: true
+      envVariables:
+        PYTHONPATH: /var/www/.pydeps
+        PORT: "8000"
+        RAILWAY_VOLUME_MOUNT_PATH: /var/www/data
+      start: python -m uvicorn main:app --host 0.0.0.0 --port 8000
